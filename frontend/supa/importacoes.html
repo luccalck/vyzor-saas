@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Importações - Vyzor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .loading-placeholder {
+            height: 1.5rem;
+            width: 70%;
+            background-color: #e5e7eb;
+            border-radius: 0.375rem;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100" style="display: none;">
+    <div class="flex h-screen">
+        
+        <!-- ============================================= -->
+        <!-- BARRA LATERAL (SIDEBAR)                       -->
+        <!-- ============================================= -->
+        <aside class="w-64 bg-white shadow-lg flex flex-col h-full fixed">
+            <!-- Logo -->
+            <div class="h-20 flex items-center justify-center border-b border-gray-200">
+                <h1 class="text-2xl font-bold text-blue-600">VYZOR</h1>
+            </div>
+
+            <!-- Navegação Principal -->
+            <nav class="flex-1 overflow-y-auto p-4 space-y-2">
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2">Principal</p>
+                <a href="./index.html" id="nav-visao-geral" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Visão Geral -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25C3.504 21 3 20.496 3 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25c-.621 0-1.125-.504-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25c-.621 0-1.125-.504-1.125-1.125V4.125z" /></svg>
+                    <span>Visão Geral</span>
+                </a>
+
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 pt-4">Dashboards</p>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Vendas -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6A.75.75 0 012.25 5.25v-.75m0 0A.75.75 0 013 4.5A.75.75 0 013.75 4.5m0 0v-.75A.75.75 0 013 3A.75.75 0 012.25 3.75v.75m9 1.5v.75A.75.75 0 0112 6a.75.75 0 01-.75-.75v-.75m0 0a.75.75 0 01.75-.75.75.75 0 01.75.75m0 0v-.75a.75.75 0 01-.75-.75.75.75 0 01-.75.75v.75m9 1.5v.75a.75.75 0 01-.75.75.75.75 0 01-.75-.75v-.75m0 0a.75.75 0 01.75-.75.75.75 0 01.75.75m0 0v-.75a.75.75 0 01-.75-.75.75.75 0 01-.75.75v.75M6.375 12v.75a.75.75 0 01-.75.75.75.75 0 01-.75-.75v-.75m0 0A.75.75 0 016 12A.75.75 0 016.375 12m0 0v-.75a.75.75 0 01-.75-.75.75.75 0 01-.75.75v.75m9 1.5v.75a.75.75 0 01-.75.75.75.75 0 01-.75-.75v-.75m0 0a.75.75 0 01.75-.75.75.75 0 01.75.75m0 0v-.75a.75.75 0 01-.75-.75.75.75 0 01-.75.75v.75" /></svg>
+                    <span>Vendas</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Marketing -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" /><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" /></svg>
+                    <span>Marketing</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Operações -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" /></svg>
+                    <span>Operações</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Customer Success -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.31h5.364c.518 0 .734.654.372 1.01l-4.36 3.192a.563.563 0 00-.182.658l2.125 5.111a.563.563 0 01-.84.606l-4.37-3.192a.563.563 0 00-.656 0l-4.37-3.192a.563.563 0 01-.84-.606l2.125-5.111a.563.563 0 00-.182-.658L2.484 9.92a.563.563 0 01.372-1.01h5.364a.563.563 0 00.475-.31l2.125-5.111z" /></svg>
+                    <span>Customer Success</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Financeiro -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0l.879-.659M12 21a9.002 9.002 0 008.824-10.29C20.93 7.845 20.142 6 18 6H6c-2.142 0-2.93 1.845-2.824 4.71A9.002 9.002 0 0012 21z" /></svg>
+                    <span>Financeiro</span>
+                </a>
+
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 pt-4">Dados</p>
+                <a href="./importacoes.html" id="nav-importacao" class="flex items-center space-x-3 px-3 py-2 rounded-lg bg-blue-50 text-blue-700 font-semibold">
+                    <!-- Ícone Importação -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" /></svg>
+                    <span>Importação de Dados</span>
+                </a>
+                
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 pt-4">Gestão</p>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Metas -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h12A2.25 2.25 0 0020.25 14.25V3m-16.5 0h16.5m-16.5 0A2.25 2.25 0 006 5.25h12A2.25 2.25 0 0020.25 3m-16.5 0v.008c0 .341.22.658.533.795l3.038 1.013a.75.75 0 00.676 0l3.038-1.013A.75.75 0 0012 3.008V3m-8.25 0c.312.137.64.208.967.208h10.56c.327 0 .655-.071.967-.208m-12.498 5.602l3.038 1.013a.75.75 0 00.676 0l3.038-1.013A.75.75 0 0012 8.602V6.75m-8.25 1.852c.312.137.64.208.967.208h10.56c.327 0 .655-.071.967-.208m-12.498 3.75l3.038 1.013a.75.75 0 00.676 0l3.038-1.013A.75.75 0 0012 12.352v-1.85" /></svg>
+                    <span>Metas</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Relatórios -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6A7.5 7.5 0 107.5 7.5h-7.5V6z" /><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" /></svg>
+                    <span>Relatórios</span>
+                </a>
+                
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 pt-4">Administração</p>
+                <a href="./integracoes.html" id="nav-integracoes" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Integrações -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" /></svg>
+                    <span>Integrações</span>
+                </a>
+                <a href="./usuarios.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Usuários -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                    <span>Usuários</span>
+                </a>
+                <a href="./configuracoes.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Configurações -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-1.007 1.11-.1.06.052.119.102.178.152l.094.094a1.5 1.5 0 002.12 0l.094-.094c.059-.05.118-.1.178-.152.55-.007 1.02.46 1.11.1.09-.542.56-1.007 1.11-.1.06.052.119-.102.178-.152l.094-.094a1.5 1.5 0 002.12 0l.094-.094c.059-.05.118-.1.178-.152.55-.007 1.02-.46 1.11-.1.09-.542.56-1.007 1.11-.1.06.052.119.102.178-.152l.094-.094a1.5 1.5 0 002.12 0l.094-.094c.059-.05.118-.1.178-.152.55-.007 1.02-.46 1.11-.1.09-.542.56-1.007 1.11-.1.06.052.119.102.178-.152l.094-.094a1.5 1.5 0 002.12 0l.094-.094c.059-.05.118-.1.178-.152.55-.007 1.02-.46 1.11-.1v1.594c.09.542-.275 1.139-.746 1.591l-.094.094a1.5 1.5 0 000 2.12l.094.094c.47.452.836 1.049.746 1.591v1.594c-.09.542-.56 1.007-1.11.1-.06-.052-.119-.102-.178-.152l-.094-.094a1.5 1.5 0 00-2.12 0l-.094.094c-.059.05-.118.1-.178.152-.55.007-1.02-.46-1.11-.1-.09.542-.56 1.007-1.11.1-.06-.052-.119-.102-.178-.152l-.094-.094a1.5 1.5 0 00-2.12 0l-.094.094c-.059.05-.118.1-.178.152-.55.007-1.02-.46-1.11-.1-.09.542-.56 1.007-1.11.1-.06-.052-.119-.102-.178-.152l-.094-.094a1.5 1.5 0 00-2.12 0l-.094.094c-.059.05-.118.1-.178.152-.55.007-1.02-.46-1.11-.1-.09.542-.56 1.007-1.11.1-.06-.052-.119-.102-.178-.152l-.094-.094a1.5 1.5 0 00-2.12 0l-.094.094c-.059.05-.118.1-.178.152-.55.007-1.02-.46-1.11-.1v-1.594c-.09-.542.275-1.139.746-1.591l.094-.094a1.5 1.5 0 000-2.12l-.094-.094a1.5 1.5 0 000-2.12l.094-.094c.47-.452.836-1.049.746-1.591V3.94zM12 15a3 3 0 100-6 3 3 0 000 6z" /></svg>
+                    <span>Configurações</span>
+                </a>
+            </nav>
+
+            <!-- Perfil do Usuário / Sair -->
+            <div class="border-t border-gray-200 p-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold" id="user-avatar">
+                        U
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold text-gray-800" id="user-name-sidebar">Carregando...</p>
+                        <p class="text-xs text-gray-500" id="user-email-sidebar">Carregando...</p>
+                    </div>
+                </div>
+                <button id="logout-button" class="w-full text-left text-sm text-red-600 font-medium hover:underline mt-3 pl-1">
+                    Sair
+                </button>
+            </div>
+        </aside>
+
+        <!-- ============================================= -->
+        <!-- CONTEÚDO PRINCIPAL                          -->
+        <!-- ============================================= -->
+        <main class="ml-64 flex-1 h-screen overflow-y-auto">
+            <div class="p-8">
+                <!-- Header do Conteúdo -->
+                <header class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-800">Importação de Dados</h2>
+                    <p class="text-gray-600">Gerencie seus arquivos e importações</p>
+                </header>
+
+                <!-- Botão Nova Importação -->
+                <div class="mb-6">
+                    <button id="btnNovaImportacao" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                        <svg class="h-5 w-5 inline mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" /></svg>
+                        Nova Importação
+                    </button>
+                </div>
+
+                <!-- Área de Upload -->
+                <div id="uploadArea" class="hidden mb-6">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Nova Importação</h3>
+                        <form id="formImportacao" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Nome do Arquivo</label>
+                                <input type="text" id="nomeArquivo" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Arquivo</label>
+                                <select id="tipoArquivo" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                    <option value="">Selecione o tipo</option>
+                                    <option value="csv">CSV</option>
+                                    <option value="excel">Excel</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Arquivo</label>
+                                <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div class="flex space-x-4">
+                                <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                                    <svg class="h-4 w-4 inline mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" /></svg>
+                                    Importar
+                                </button>
+                                <button type="button" id="btnCancelar" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                                    <svg class="h-4 w-4 inline mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                                    Cancelar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Histórico de Importações -->
+                <div class="bg-white rounded-lg shadow-sm">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-800">Histórico de Importações</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome do Arquivo</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tamanho</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="importacoesTableBody" class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td colspan="7" class="px-6 py-4 text-center text-gray-500">Carregando importações...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:8000';
+        let authToken = null;
+        let currentUser = null;
+
+        /** Função auxiliar para chamadas de API com tratamento de erro */
+        async function fetchAPI(endpoint, options = {}) {
+            const url = `${API_BASE_URL}${endpoint}`;
+            const config = {
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json',
+                    ...options.headers
+                },
+                ...options
+            };
+
+            try {
+                const response = await fetch(url, config);
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        // Token expirado ou inválido
+                        alert('Sessão expirada. Por favor, faça login novamente.');
+                        localStorage.removeItem('authToken');
+                        window.location.href = 'login.html';
+                        throw new Error('Sessão expirada');
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return await response.json();
+            } catch (error) {
+                console.error(`Erro na API ${endpoint}:`, error);
+                throw error;
+            }
+        }
+
+        // Format file size
+        function formatFileSize(bytes) {
+            if (!bytes) return '-';
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(1024));
+            return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        // Format status
+        function formatStatus(status) {
+            const statusMap = {
+                'pendente': { text: 'Pendente', class: 'bg-yellow-100 text-yellow-800' },
+                'processando': { text: 'Processando', class: 'bg-blue-100 text-blue-800' },
+                'concluido': { text: 'Concluído', class: 'bg-green-100 text-green-800' },
+                'erro': { text: 'Erro', class: 'bg-red-100 text-red-800' }
+            };
+            const statusInfo = statusMap[status] || { text: status, class: 'bg-gray-100 text-gray-800' };
+            return `<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${statusInfo.class}">${statusInfo.text}</span>`;
+        }
+
+        // Load user info
+        async function loadUserInfo() {
+            try {
+                const userData = await fetchAPI('/usuarios/me');
+                currentUser = userData; // Store user data for later use
+                document.getElementById('user-name-sidebar').textContent = userData.nome || userData.email || 'Usuário';
+                document.getElementById('user-email-sidebar').textContent = userData.email || '';
+                
+                // Atualiza avatar com inicial do nome
+                const initial = (userData.nome || userData.email || 'U').charAt(0).toUpperCase();
+                document.getElementById('user-avatar').textContent = initial;
+            } catch (error) {
+                console.error('Erro ao carregar informações do usuário:', error);
+                document.getElementById('user-name-sidebar').textContent = 'Usuário';
+                document.getElementById('user-email-sidebar').textContent = '';
+            }
+        }
+
+        // Load importacoes
+        async function loadImportacoes() {
+            try {
+                const importacoes = await fetchAPI('/importacoes/usuario');
+                
+                const tbody = document.getElementById('importacoesTableBody');
+                if (importacoes.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="px-6 py-4 text-center text-gray-500">Nenhuma importação encontrada</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = importacoes.map(imp => `
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${imp.id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${imp.nome_arquivo}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${imp.tipo_arquivo?.toUpperCase()}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatStatus(imp.status)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${formatFileSize(imp.tamanho_bytes)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${new Date(imp.created_at || Date.now()).toLocaleDateString('pt-BR')}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <button onclick="processarImportacao(${imp.id})" class="text-blue-600 hover:text-blue-900 mr-2" title="Processar com IA">
+                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" /></svg>
+                            </button>
+                            <button onclick="deleteImportacao(${imp.id})" class="text-red-600 hover:text-red-900" title="Excluir">
+                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Erro ao carregar importações:', error);
+                document.getElementById('importacoesTableBody').innerHTML = '<tr><td colspan="7" class="px-6 py-4 text-center text-red-500">Erro ao carregar importações</td></tr>';
+            }
+        }
+
+        // Create importacao
+        document.getElementById('formImportacao').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const nomeArquivo = document.getElementById('nomeArquivo').value;
+            const tipoArquivo = document.getElementById('tipoArquivo').value;
+            const fileInput = document.getElementById('fileInput');
+            
+            if (!fileInput.files[0]) {
+                alert('Por favor, selecione um arquivo');
+                return;
+            }
+
+            if (!currentUser || !currentUser.id) {
+                alert('Erro: informações do usuário não carregadas. Por favor, recarregue a página.');
+                return;
+            }
+
+            try {
+                // Create import record
+                const importacao = await fetchAPI('/importacoes/', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        nome_arquivo: nomeArquivo,
+                        tipo_arquivo: tipoArquivo,
+                        usuario_id: currentUser.id
+                    })
+                });
+
+                // Upload file for AI processing
+                const formData = new FormData();
+                formData.append('file', fileInput.files[0]);
+                
+                await fetchAPI(`/ai/classificar-e-inserir/${importacao.id}`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        // Don't set Content-Type for FormData, let browser set it
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+
+                alert('Importação criada e processada com sucesso!');
+                document.getElementById('uploadArea').classList.add('hidden');
+                document.getElementById('formImportacao').reset();
+                loadImportacoes();
+            } catch (error) {
+                console.error('Erro ao criar importação:', error);
+                alert('Erro ao criar importação: ' + (error.message || 'Erro desconhecido'));
+            }
+        });
+
+        // Process with AI
+        async function processarImportacao(importacaoId) {
+            if (!confirm('Deseja processar esta importação com IA?')) return;
+            
+            try {
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = '.csv,.xlsx,.xls';
+                
+                fileInput.onchange = async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    
+                    await fetchAPI(`/ai/classificar-e-inserir/${importacaoId}`, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Authorization': `Bearer ${authToken}`
+                        }
+                    });
+                    
+                    alert('Importação processada com sucesso!');
+                    loadImportacoes();
+                };
+                
+                fileInput.click();
+            } catch (error) {
+                console.error('Erro ao processar importação:', error);
+                alert('Erro ao processar importação: ' + (error.message || 'Erro desconhecido'));
+            }
+        }
+
+        // Delete importacao
+        async function deleteImportacao(importacaoId) {
+            if (!confirm('Deseja realmente excluir esta importação?')) return;
+            
+            try {
+                await fetchAPI(`/importacoes/${importacaoId}`, {
+                    method: 'DELETE'
+                });
+                alert('Importação excluída com sucesso!');
+                loadImportacoes();
+            } catch (error) {
+                console.error('Erro ao excluir importação:', error);
+                alert('Erro ao excluir importação: ' + (error.message || 'Erro desconhecido'));
+            }
+        }
+
+        // UI Events
+        document.getElementById('btnNovaImportacao').addEventListener('click', () => {
+            document.getElementById('uploadArea').classList.remove('hidden');
+        });
+
+        document.getElementById('btnCancelar').addEventListener('click', () => {
+            document.getElementById('uploadArea').classList.add('hidden');
+            document.getElementById('formImportacao').reset();
+        });
+
+        document.getElementById('logout-button').addEventListener('click', () => {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        });
+
+        /** FUNÇÃO PRINCIPAL DE INICIALIZAÇÃO */
+        async function initImportacoes() {
+            try {
+                // 1. Carrega o dado essencial primeiro (autenticação do usuário)
+                await loadUserInfo();
+
+                // 2. MOSTRA A PÁGINA IMEDIATAMENTE!
+                document.body.style.display = 'flex';
+
+                // 3. Inicia o carregamento das importações
+                loadImportacoes();
+
+            } catch (error) {
+                console.error('Falha ao inicializar a página de importações:', error);
+                // Se o fetchAPI falhar (ex: token expirado), ele já redireciona
+                if (!error.message.includes('Sessão expirada')) {
+                    handleLogout();
+                }
+            }
+        }
+
+        /** Lógica de Logout */
+        function handleLogout() {
+            authToken = null;
+            localStorage.removeItem('authToken'); 
+            window.location.href = 'login.html';
+        }
+
+        // =============================================
+        // INICIALIZAÇÃO E AUTH GUARD
+        // =============================================
+        authToken = localStorage.getItem('authToken');
+        
+        if (!authToken) {
+            window.location.href = 'login.html';
+        } else {
+            // Inicia o carregamento progressivo
+            initImportacoes();
+        }
+    </script>
+</body>
+</html>

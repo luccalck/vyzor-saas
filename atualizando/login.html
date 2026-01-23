@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VYZOR Analytics Platform - Login</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos específicos para a página de login */
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: var(--background);
+            padding: 2rem;
+        }
+
+        .login-card {
+            background-color: var(--card);
+            border-radius: var(--radius);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
+
+        .login-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-logo-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #cbb26a 0%, #eee293 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-foreground);
+            margin-bottom: 1rem;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .form-group label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--foreground);
+        }
+
+        .form-group input {
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background-color: var(--input-background);
+            color: var(--foreground);
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--ring);
+            box-shadow: 0 0 0 2px rgba(203, 178, 106, 0.25);
+        }
+
+        .login-button {
+            background: linear-gradient(135deg, #cbb26a 0%, #eee293 100%);
+            color: var(--primary-foreground);
+            border: none;
+            border-radius: var(--radius);
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 0.5rem;
+        }
+
+        .login-button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .login-footer {
+            margin-top: 2rem;
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        /* Theme toggle */
+        .theme-toggle-login {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: transparent;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: var(--foreground);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2 class="vyzor-text-gradient">VYZOR</h2>
+            <p>Carregando plataforma...</p>
+        </div>
+    </div>
+
+    <!-- Login Container -->
+    <div id="login-container" class="login-container hidden">
+        <button id="theme-toggle-login" class="theme-toggle-login">
+            <span id="theme-icon-light-login">☀️</span>
+            <span id="theme-icon-dark-login" class="hidden">🌙</span>
+        </button>
+
+        <div class="login-card">
+            <div class="login-logo">
+                <div class="login-logo-icon">V</div>
+                <h1 class="vyzor-text-gradient">VYZOR</h1>
+                <p>Analytics Platform</p>
+            </div>
+
+            <h2>Bem-vindo de volta</h2>
+            <p>Faça login para acessar sua conta</p>
+
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                </div>
+
+                <div id="error-message" class="error-message">Email ou senha incorretos. Tente novamente.</div>
+
+                <button type="submit" class="login-button">Entrar</button>
+            </form>
+
+            <div class="login-footer">
+                © 2025 VYZOR Analytics. Todos os direitos reservados.
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/login.js"></script>
+</body>
+</html>

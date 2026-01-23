@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações - VYZOR</title>
+    <!-- 1. Carrega o Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 2. Define a fonte Inter como padrão */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* 3. Estilo para o Toast (Notificação) - ATUALIZADO */
+        .toast {
+            transition: all 0.5s ease;
+            transform: translateY(100%);
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 100;
+            /* Novos estilos */
+            display: flex;
+            align-items: center;
+            padding: 1rem; /* Mais padding */
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+        }
+        .toast.show {
+            transform: translateY(0);
+        }
+        /* Novas classes de cor para o Toast */
+        .toast-success {
+            background-color: #059669; /* bg-green-700 */
+            color: white;
+        }
+        .toast-error {
+            background-color: #DC2626; /* bg-red-600 */
+            color: white;
+        }
+        .toast-icon { /* Novo container para o ícone */
+            flex-shrink: 0;
+            width: 1.5rem; /* w-6 */
+            height: 1.5rem; /* h-6 */
+            margin-right: 0.75rem; /* mr-3 */
+        }
+
+        /* 4. Estilos para Toggle Switch */
+        .toggle-checkbox:checked {
+            background-color: #2563eb; /* bg-blue-600 */
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            transform: translateX(1.25rem); /* move 20px */
+        }
+    </style>
+</head>
+<body class="bg-gray-100" style="display: none;"> <!-- Oculta o corpo até o JS verificar o auth -->
+
+    <div class="flex h-screen">
+        
+        <!-- ============================================= -->
+        <!-- BARRA LATERAL (SIDEBAR)                       -->
+        <!-- ============================================= -->
+        <aside class="w-64 bg-white shadow-lg flex flex-col h-full fixed">
+            <!-- Logo -->
+            <div class="h-20 flex items-center justify-center border-b border-gray-200">
+                <h1 class="text-2xl font-bold text-blue-600">VYZOR</h1>
+            </div>
+
+            <!-- Navegação Principal -->
+            <nav class="flex-1 overflow-y-auto p-4 space-y-2">
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2">Principal</p>
+                <a href="./index.html" id="nav-visao-geral" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 font-medium">
+                    <!-- Ícone Visão Geral -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25C3.504 21 3 20.496 3 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25c-.621 0-1.125-.504-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25c-.621 0-1.125-.504-1.125-1.125V4.125z" /></svg>
+                    <span>Visão Geral</span>
+                </a>
+
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 pt-4">Dashboards</p>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Vendas -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6A.75.75 0 012.25 5.25v-.75m0 0A.75.75 0 013 4.5A.75.75 0 013.75 4.5m0 0v-.75A.75.75 0 013 3A.75.75 0 012.25 3.75v.75m9 1.5v.75A.75.75 0 0112 6a.75.75 0 01-.75-.75v-.75m0 0a.75.75 0 01.75-.75.75.75 0 01.75.75m0 0v-.75a.75.75 0 01-.75-.75.75.75 0 01-.75.75v.75m9 1.5v.75a.75.75 0 01-.75.75.75.75 0 01-.75-.75v-.75m0 0a.75.75 0 01.75-.75.75.75 0 01.75.75m0 0v-.75a.75.75 0 01-.75-.75.75.75 0 01-.75.75v.75M6.375 12v.75a.75.75 0 01-.75.75.75.75 0 01-.75-.75v-.75m0 0A.75.75 0 016 12A.75.75 0 016.375 12m0 0v-.75a.75.75 0 01-.75-.75.75.75 0 01-.75.75v.75m9 1.5v.75a.75.75 0 01-.75.75.75.75 0 01-.75-.75v-.75m0 0a.75.75 0 01.75-.75.75.75 0 01.75.75m0 0v-.75a.75.75 0 01-.75-.75.75.75 0 01-.75.75v.75M6.375 18v.75a.75.75 0 01-.75.75.75.75 0 01-.75-.75v-.75m0 0a.75.75 0 01.75-.75.75.75 0 01.75.75M3.75 18a.75.75 0 01.75.75v.75a.75.75 0 01-.75.75.75.75 0 01-.75-.75v-.75A.75.75 0 013.75 18m9 0v.75a.75.75 0 01-.75.75.75.75 0 01-.75-.75v-.75m0 0a.75.75 0 01.75-.75.75.75 0 01.75.75m-3-3v.75a.75.75 0 01-.75.75.75.75 0 01-.75-.75v-.75m0 0a.75.75 0 01.75-.75.75.75 0 01.75.75m0 0v-.75a.75.75 0 01-.75-.75.75.75 0 01-.75.75v.75m6 3v.75a.75.75 0 01-.75.75.75.75 0 01-.75-.75v-.75m0 0a.75.75 0 01.75-.75.75.75 0 01.75.75m0 0v-.75a.75.75 0 01-.75-.75.75.75 0 01-.75.75v.75" /></svg>
+                    <span>Vendas</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Marketing -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" /><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" /></svg>
+                    <span>Marketing</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Operações -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" /></svg>
+                    <span>Operações</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Customer Success -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.31h5.364c.518 0 .734.654.372 1.01l-4.36 3.192a.563.563 0 00-.182.658l2.125 5.111a.563.563 0 01-.84.606l-4.37-3.192a.563.563 0 00-.656 0l-4.37 3.192a.563.563 0 01-.84-.606l2.125-5.111a.563.563 0 00-.182-.658L2.484 9.92a.563.563 0 01.372-1.01h5.364a.563.563 0 00.475-.31l2.125-5.111z" /></svg>
+                    <span>Customer Success</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Financeiro -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0l.879-.659M12 21a9.002 9.002 0 008.824-10.29C20.93 7.845 20.142 6 18 6H6c-2.142 0-2.93 1.845-2.824 4.71A9.002 9.002 0 0012 21z" /></svg>
+                    <span>Financeiro</span>
+                </a>
+
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 pt-4">Dados</p>
+                <a href="#" id="nav-importacao" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Importação -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" /></svg>
+                    <span>Importação de Dados</span>
+                </a>
+                
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 pt-4">Gestão</p>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Metas -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h12A2.25 2.25 0 0020.25 14.25V3m-16.5 0h16.5m-16.5 0A2.25 2.25 0 006 5.25h12A2.25 2.25 0 0020.25 3m-16.5 0v.008c0 .341.22.658.533.795l3.038 1.013a.75.75 0 00.676 0l3.038-1.013A.75.75 0 0012 3.008V3m-8.25 0c.312.137.64.208.967.208h10.56c.327 0 .655-.071.967-.208m-12.498 5.602l3.038 1.013a.75.75 0 00.676 0l3.038-1.013A.75.75 0 0012 8.602V6.75m-8.25 1.852c.312.137.64.208.967.208h10.56c.327 0 .655-.071.967-.208m-12.498 3.75l3.038 1.013a.75.75 0 00.676 0l3.038-1.013A.75.75 0 0012 12.352v-1.85" /></svg>
+                    <span>Metas</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Relatórios -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6A7.5 7.5 0 107.5 7.5h-7.5V6z" /><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" /></svg>
+                    <span>Relatórios</span>
+                </a>
+                
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 pt-4">Administração</p>
+                <a href="./integracoes.html" id="nav-integracoes" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Integrações -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" /></svg>
+                    <span>Integrações</span>
+                </a>
+                <a href="./usuarios.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Usuários -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                    <span>Usuários</span>
+                </a>
+                <a href="./configuracoes.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg bg-blue-50 text-blue-700 font-semibold">
+                    <!-- Ícone Configurações (ATIVO) -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-1.007 1.11-.1.06.052.119.102.178.152l.094.094a1.5 1.5 0 002.12 0l.094-.094c.059-.05.118-.1.178-.152.55-.007 1.02.46 1.11.1.09-.542.56-1.007 1.11-.1.06.052.119.102.178.152l.094.094a1.5 1.5 0 002.12 0l.094-.094c.059-.05.118-.1.178-.152.55-.007 1.02.46 1.11.1.09-.542.56-1.007 1.11-.1.06.052.119.102.178.152l.094.094a1.5 1.5 0 002.12 0l.094-.094c.059-.05.118-.1.178-.152.55-.007 1.02.46 1.11.1.09-.542.56-1.007 1.11-.1.06.052.119.102.178.152l.094.094a1.5 1.5 0 002.12 0l.094-.094c.059-.05.118-.1.178-.152.55-.007 1.02.46 1.11.1v1.594c.09.542-.275 1.139-.746 1.591l-.094.094a1.5 1.5 0 000 2.12l.094.094c.47.452.836 1.049.746 1.591v1.594c-.09.542-.56 1.007-1.11.1-.06-.052-.119-.102-.178-.152l-.094-.094a1.5 1.5 0 00-2.12 0l-.094.094c-.059.05-.118.1-.178.152-.55.007-1.02-.46-1.11-.1-.09.542-.56 1.007-1.11.1-.06-.052-.119-.102-.178-.152l-.094-.094a1.5 1.5 0 00-2.12 0l-.094.094c-.059.05-.118.1-.178.152-.55.007-1.02-.46-1.11-.1-.09.542-.56 1.007-1.11.1-.06-.052-.119-.102-.178-.152l-.094-.094a1.5 1.5 0 00-2.12 0l-.094.094c-.059.05-.118.1-.178.152-.55.007-1.02-.46-1.11-.1-.09.542-.56 1.007-1.11.1-.06-.052-.119-.102-.178-.152l-.094-.094a1.5 1.5 0 00-2.12 0l-.094.094c-.059.05-.118.1-.178.152-.55.007-1.02-.46-1.11-.1v-1.594c-.09-.542.275-1.139.746-1.591l.094-.094a1.5 1.5 0 000-2.12l-.094-.094a1.5 1.5 0 000-2.12l.094-.094c.47-.452.836-1.049.746-1.591V3.94zM12 15a3 3 0 100-6 3 3 0 000 6z" /></svg>
+                    <span>Configurações</span>
+                </a>
+            </nav>
+
+            <!-- Perfil do Usuário / Sair -->
+            <div class="border-t border-gray-200 p-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold" id="user-avatar">
+                        A
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold text-gray-800" id="user-name-sidebar">Carregando...</p>
+                        <p class="text-xs text-gray-500" id="user-email-sidebar">Carregando...</p>
+                    </div>
+                </div>
+                <button id="logout-button" class="w-full text-left text-sm text-red-600 font-medium hover:underline mt-3 pl-1">
+                    Sair
+                </button>
+            </div>
+        </aside>
+
+        <!-- ============================================= -->
+        <!-- CONTEÚDO PRINCIPAL (ATUALIZADO)               -->
+        <!-- ============================================= -->
+        <main class="ml-64 flex-1 h-screen overflow-y-auto">
+            <!-- [!code --] Conteúdo antigo:
+            <div class="p-8 max-w-5xl mx-auto">
+            -->
+            <!-- [!code ++] Conteúdo novo: max-w-7xl para um layout mais largo e centralizado -->
+            <div class="p-8 max-w-7xl mx-auto">
+                <!-- Header do Conteúdo -->
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-800">Configurações</h1>
+                    <p class="text-gray-600 mt-1">Gerencie suas informações de perfil e preferências de notificação.</p>
+                </div>
+
+                <!-- Container dos Forms -->
+                <div class="space-y-8">
+
+                    <!-- Seção Meu Perfil -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <form id="profile-form">
+                            <div class="p-6">
+                                <h2 class="text-xl font-semibold text-gray-800">Meu Perfil</h2>
+                                <p class="text-sm text-gray-500 mt-1">Informações básicas da sua conta.</p>
+                                
+                                <div class="mt-6 space-y-4">
+                                    <div>
+                                        <label for="profile-name" class="block text-sm font-medium text-gray-700">Nome Completo</label>
+                                        <input type="text" id="profile-name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                                    </div>
+                                    <div>
+                                        <label for="profile-email" class="block text-sm font-medium text-gray-700">Email</label>
+                                        <input type="email" id="profile-email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                                    </div>
+                                    <div class="text-xs text-gray-500">
+                                        Obs: A alteração de senha deve ser feita através do administrador.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="px-6 py-4 bg-gray-50 text-right">
+                                <!-- [!code --] Botão antigo:
+                                <button type="submit" id="profile-save-button" class="px-4 py-2 bg-blue-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700">
+                                -->
+                                <!-- [!code ++] Botão novo com mais estilo -->
+                                <button type="submit" id="profile-save-button" class="px-4 py-2 bg-blue-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700 shadow-sm hover:shadow-md transition-all transform hover:-translate-y-px">
+                                    Salvar Alterações
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Seção Preferências de Notificação -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <form id="prefs-form">
+                            <div class="p-6">
+                                <h2 class="text-xl font-semibold text-gray-800">Preferências de Notificação</h2>
+                                <p class="text-sm text-gray-500 mt-1">Escolha como e quando você deseja ser notificado.</p>
+                                
+                                <div class="mt-6 space-y-6">
+                                    <!-- Canais -->
+                                    <fieldset>
+                                        <legend class="text-base font-medium text-gray-900">Canais de Notificação</legend>
+                                        <div class="mt-4 space-y-4">
+                                            <div class="flex items-center justify-between">
+                                                <span class="flex flex-col">
+                                                    <span class="text-sm font-medium text-gray-700">Notificações no App</span>
+                                                    <span class="text-sm text-gray-500">Alertas dentro da plataforma.</span>
+                                                </span>
+                                                <label class="relative inline-flex items-center cursor-pointer">
+                                                    <input type="checkbox" id="prefs-in-app" class="sr-only toggle-checkbox">
+                                                    <div class="w-10 h-6 bg-gray-200 rounded-full transition-colors duration-200 ease-in-out toggle-checkbox"></div>
+                                                    <div class="dot w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-200 ease-in-out absolute left-1 top-1 toggle-label"></div>
+                                                </label>
+                                            </div>
+                                            <div class="flex items-center justify-between">
+                                                <span class="flex flex-col">
+                                                    <span class="text-sm font-medium text-gray-700">Receber por Email</span>
+                                                    <span class="text-sm text-gray-500">Resumos e alertas importantes.</span>
+                                                </span>
+                                                <label class="relative inline-flex items-center cursor-pointer">
+                                                    <input type="checkbox" id="prefs-email" class="sr-only toggle-checkbox">
+                                                    <div class="w-10 h-6 bg-gray-200 rounded-full transition-colors duration-200 ease-in-out toggle-checkbox"></div>
+                                                    <div class="dot w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-200 ease-in-out absolute left-1 top-1 toggle-label"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    
+                                    <!-- Tipos de Alerta -->
+                                    <fieldset>
+                                        <legend class="text-base font-medium text-gray-900">Tipos de Alerta</legend>
+                                        <div class="mt-4 space-y-4">
+                                            <div class="flex items-center">
+                                                <input id="prefs-alertas-financeiros" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                                <label for="prefs-alertas-financeiros" class="ml-3 block text-sm font-medium text-gray-700">Alertas Financeiros</label>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <input id="prefs-alertas-produto" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                                <label for="prefs-alertas-produto" class="ml-3 block text-sm font-medium text-gray-700">Alertas de Produto</label>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <input id="prefs-alertas-operacional" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                                <label for="prefs-alertas-operacional" class="ml-3 block text-sm font-medium text-gray-700">Alertas Operacionais</slabel>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                    <!-- Limiar Customizado -->
+                                    <div>
+                                        <label for="prefs-limiar-receita" class="block text-sm font-medium text-gray-700">Limiar de Queda de Receita (%)</label>
+                                        <input type="number" id="prefs-limiar-receita" step="0.1" class="mt-1 block w-full md:w-1/2 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                        <p class="mt-1 text-xs text-gray-500">Ser notificado se a receita cair mais que este %.</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="px-6 py-4 bg-gray-50 text-right">
+                                <!-- [!code --] Botão antigo:
+                                <button type="submit" id="prefs-save-button" class="px-4 py-2 bg-blue-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700">
+                                -->
+                                <!-- [!code ++] Botão novo com mais estilo -->
+                                <button type="submit" id="prefs-save-button" class="px-4 py-2 bg-blue-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700 shadow-sm hover:shadow-md transition-all transform hover:-translate-y-px">
+                                    Salvar Preferências
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- [!code ++] NOVO CARD PARA PREENCHER ESPAÇO -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <div class="p-6">
+                            <h2 class="text-xl font-semibold text-gray-800">Plano e Faturamento</h2>
+                            <p class="text-sm text-gray-500 mt-1">Gerencie seu plano e histórico de pagamentos.</p>
+                            
+                            <div class="mt-6 p-6 bg-gray-50 rounded-lg flex items-center justify-between">
+                                <div>
+                                    <span class="text-sm font-medium text-blue-600">PLANO ATUAL</span>
+                                    <p class="text-2xl font-bold text-gray-900 mt-1">Plano Profissional</p>
+                                    <p class="text-sm text-gray-600 mt-1">Sua próxima fatura será em 15 de Dezembro, 2025.</p>
+                                </div>
+                                <div>
+                                    <button type="button" class="px-4 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                        Gerenciar Plano
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+                            <a href="#" class="text-sm font-medium text-blue-600 hover:underline">Ver histórico de faturamento</a>
+                        </div>
+                    </div>
+                    <!-- [!code ++] FIM DO NOVO CARD -->
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ============================================= -->
+    <!-- TOAST NOTIFICATION (ATUALIZADO)               -->
+    <!-- ============================================= -->
+    <!-- [!code --] Toast antigo:
+    <div id="toast" class="toast">
+        <span id="toast-message"></span>
+    </div>
+    -->
+    <!-- [!code ++] Toast novo com ícone -->
+    <div id="toast" class="toast">
+        <div id="toast-icon-container" class="toast-icon">
+            <!-- Ícone (check ou X) será injetado aqui -->
+        </div>
+        <span id="toast-message">Operação realizada com sucesso!</span>
+    </div>
+
+
+    <!-- ============================================= -->
+    <!-- LÓGICA JAVASCRIPT                           -->
+    <!-- ============================================= -->
+    <script type="module">
+        // =============================================
+        // CONFIGURAÇÃO
+        // =============================================
+        const API_BASE_URL = 'http://localhost:8000'; 
+        let authToken = null;
+        let currentUserId = null; // Armazena o ID do usuário logado
+
+        // =============================================
+        // ELEMENTOS DOM
+        // =============================================
+        const userNameSidebarEl = document.getElementById('user-name-sidebar');
+        const userEmailSidebarEl = document.getElementById('user-email-sidebar');
+        const userAvatarEl = document.getElementById('user-avatar');
+        const logoutButton = document.getElementById('logout-button');
+        
+        // Form de Perfil
+        const profileForm = document.getElementById('profile-form');
+        const profileName = document.getElementById('profile-name');
+        const profileEmail = document.getElementById('profile-email');
+        const profileSaveButton = document.getElementById('profile-save-button');
+        
+        // Form de Preferências
+        const prefsForm = document.getElementById('prefs-form');
+        const prefsInApp = document.getElementById('prefs-in-app');
+        const prefsEmail = document.getElementById('prefs-email');
+        const prefsAlertasFinanceiros = document.getElementById('prefs-alertas-financeiros');
+        const prefsAlertasProduto = document.getElementById('prefs-alertas-produto');
+        const prefsAlertasOperacional = document.getElementById('prefs-alertas-operacional');
+        const prefsLimiarReceita = document.getElementById('prefs-limiar-receita');
+        const prefsSaveButton = document.getElementById('prefs-save-button');
+
+        // Toast
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+        const toastIconContainer = document.getElementById('toast-icon-container'); // [!code ++]
+
+        // =============================================
+        // FUNÇÕES AUXILIARES
+        // =============================================
+
+        /** Wrapper de Fetch com Auth e Redirecionamento 401/403 */
+        async function fetchAPI(endpoint, options = {}) {
+            // ... (código idêntico) ...
+            const defaultOptions = {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            const config = { ...defaultOptions, ...options, headers: { ...defaultOptions.headers, ...(options.headers || {}) } };
+            const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+
+            if (response.status === 401) {
+                handleLogout();
+                throw new Error('Sessão expirada. Redirecionando para login.');
+            }
+            
+            if (response.status === 403) {
+                throw new Error('Acesso negado. Você precisa de permissão de administrador.');
+            }
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || `Erro HTTP ${response.status}`);
+            }
+
+            if (response.status === 204) return null;
+            return response.json();
+        }
+
+        /** Mostra notificação toast (ATUALIZADA) */
+        function showToast(message, isError = false) {
+            toastMessage.textContent = message;
+
+            // [!code ++] Define icone e cor
+            if (isError) {
+                toast.classList.remove('toast-success');
+                toast.classList.add('toast-error');
+                toastIconContainer.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2.94V17a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h7.06" />
+                    </svg>`;
+            } else {
+                toast.classList.remove('toast-error');
+                toast.classList.add('toast-success');
+                toastIconContainer.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>`;
+            }
+            // [!code --] ...
+
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        /** Lógica de Logout */
+        function handleLogout() {
+            // ... (código idêntico) ...
+            authToken = null;
+            localStorage.removeItem('authToken');
+            window.location.href = 'login.html';
+        }
+
+        // =============================================
+        // FUNÇÕES DE RENDERIZAÇÃO E CARREGAMENTO
+        // =============================================
+
+        /** Popula os dados do usuário na sidebar */
+        function populateUser(user) {
+            // ... (código idêntico) ...
+            currentUserId = user.id; // Salva o ID do usuário
+            userNameSidebarEl.textContent = user.nome_completo;
+            userEmailSidebarEl.textContent = user.email;
+            userAvatarEl.textContent = user.nome_completo.charAt(0).toUpperCase();
+        }
+
+        /** Carrega as configurações (Perfil e Preferências) */
+        async function loadSettings() {
+            // ... (código idêntico) ...
+            try {
+                // 1. Carrega dados do perfil (já temos do /me, mas podemos recarregar)
+                const userData = await fetchAPI('/usuarios/me');
+                profileName.value = userData.nome_completo;
+                profileEmail.value = userData.email;
+
+                // 2. Carrega dados de preferências
+                const prefsData = await fetchAPI('/notificacoes/preferencias');
+                
+                // Popula os campos do formulário de preferências
+                prefsInApp.checked = prefsData.canal_in_app;
+                prefsEmail.checked = prefsData.canal_email;
+                prefsAlertasFinanceiros.checked = prefsData.receber_alertas_financeiros;
+                prefsAlertasProduto.checked = prefsData.receber_alertas_produto;
+                prefsAlertasOperacional.checked = prefsData.receber_alertas_operacional;
+                prefsLimiarReceita.value = parseFloat(prefsData.limiar_queda_receita_percentual) || 10.0;
+
+            } catch (error) {
+                showToast(`Erro ao carregar configurações: ${error.message}`, true);
+            }
+        }
+        
+        // =============================================
+        // MANIPULADORES DE EVENTOS (Salvar)
+        // =============================================
+
+        /** Salva as alterações do Perfil */
+        async function handleSaveProfile(event) {
+            // ... (código idêntico) ...
+            event.preventDefault();
+            if (!currentUserId) return;
+
+            const payload = {
+                nome_completo: profileName.value,
+                email: profileEmail.value
+                // O backend (PUT /admin/usuarios/{id}) só atualiza campos não nulos
+            };
+
+            profileSaveButton.disabled = true;
+            profileSaveButton.textContent = "Salvando...";
+            
+            try {
+                // Usa o endpoint de admin para atualizar o próprio usuário
+                // (Baseado no backend, essa é a única rota de update de usuário)
+                const updatedUser = await fetchAPI(`/admin/usuarios/${currentUserId}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(payload)
+                });
+                
+                showToast('Perfil atualizado com sucesso!');
+                
+                // Atualiza a sidebar com os novos dados
+                populateUser(updatedUser);
+
+            } catch (error) {
+                showToast(error.message, true);
+            } finally {
+                profileSaveButton.disabled = false;
+                profileSaveButton.textContent = "Salvar Alterações";
+            }
+        }
+
+        /** Salva as alterações das Preferências */
+        async function handleSavePrefs(event) {
+            // ... (código idêntico) ...
+            event.preventDefault();
+
+            const payload = {
+                canal_in_app: prefsInApp.checked,
+                canal_email: prefsEmail.checked,
+                receber_alertas_financeiros: prefsAlertasFinanceiros.checked,
+                receber_alertas_produto: prefsAlertasProduto.checked,
+                receber_alertas_operacional: prefsAlertasOperacional.checked,
+                limiar_queda_receita_percentual: parseFloat(prefsLimiarReceita.value)
+            };
+
+            prefsSaveButton.disabled = true;
+            prefsSaveButton.textContent = "Salvando...";
+
+            try {
+                await fetchAPI('/notificacoes/preferencias', {
+                    method: 'PUT',
+                    body: JSON.stringify(payload)
+                });
+                showToast('Preferências salvas com sucesso!');
+            } catch (error) {
+                showToast(error.message, true);
+            } finally {
+                prefsSaveButton.disabled = false;
+                prefsSaveButton.textContent = "Salvar Preferências";
+            }
+        }
+
+        /** FUNÇÃO PRINCIPAL DE INICIALIZAÇÃO */
+        async function init() {
+            // ... (código idêntico) ...
+            try {
+                // 1. Carrega o dado essencial (autenticação do usuário)
+                const userData = await fetchAPI('/usuarios/me');
+                populateUser(userData);
+
+                // 2. MOSTRA A PÁGINA IMEDIATAMENTE!
+                document.body.style.display = 'flex';
+
+                // 3. Adiciona listeners de eventos
+                logoutButton.addEventListener('click', handleLogout);
+                profileForm.addEventListener('submit', handleSaveProfile);
+                prefsForm.addEventListener('submit', handleSavePrefs);
+                
+                // 4. Carrega os dados dos formulários
+                await loadSettings();
+
+            } catch (error) {
+                console.error('Falha ao inicializar a página:', error);
+                if (!error.message.includes('Sessão expirada')) {
+                    handleLogout(); // Redireciona se for erro de auth
+                } else {
+                    showToast(error.message, true); // Mostra outros erros
+                }
+            }
+        }
+
+        // =============================================
+        // INICIALIZAÇÃO E AUTH GUARD
+        // =============================================
+        authToken = localStorage.getItem('authToken');
+        
+        if (!authToken) {
+            window.location.href = 'login.html';
+        } else {
+            // Inicia o carregamento da página
+            init();
+        }
+    </script>
+</body>
+</html>
+

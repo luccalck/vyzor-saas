@@ -1,0 +1,1 @@
+# Backend VYZOR - Aplicação FastAPI

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - VYZOR</title>
+    <!-- 1. Carrega o Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 2. Carrega o Chart.js para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* 3. Define a fonte Inter como padrão */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* 4. Estilo para o placeholder de carregamento */
+        .loading-placeholder {
+            display: inline-block;
+            height: 1.5rem; /* Ajuste a altura conforme o texto */
+            width: 70%;
+            background-color: #e5e7eb; /* bg-gray-200 */
+            border-radius: 0.375rem; /* rounded-md */
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100" style="display: none;"> <!-- Oculta o corpo até o JS verificar o auth -->
+
+    <div class="flex h-screen">
+        
+        <!-- ============================================= -->
+        <!-- BARRA LATERAL (SIDEBAR)                       -->
+        <!-- ============================================= -->
+        <aside class="w-64 bg-white shadow-lg flex flex-col h-full fixed">
+            <!-- Logo -->
+            <div class="h-20 flex items-center justify-center border-b border-gray-200">
+                <h1 class="text-2xl font-bold text-blue-600">VYZOR</h1>
+            </div>
+
+            <!-- Navegação Principal -->
+            <nav class="flex-1 overflow-y-auto p-4 space-y-2">
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2">Principal</p>
+                <a href="./index.html" id="nav-visao-geral" class="flex items-center space-x-3 px-3 py-2 rounded-lg bg-blue-50 text-blue-700 font-semibold">
+                    <!-- Ícone Visão Geral -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25C3.504 21 3 20.496 3 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25c-.621 0-1.125-.504-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25c-.621 0-1.125-.504-1.125-1.125V4.125z" /></svg>
+                    <span>Visão Geral</span>
+                </a>
+
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 pt-4">Dashboards</p>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Vendas -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6A.75.75 0 012.25 5.25v-.75m0 0A.75.75 0 013 4.5A.75.75 0 013.75 4.5m0 0v-.75A.75.75 0 013 3A.75.75 0 012.25 3.75v.75m9 1.5v.75A.75.75 0 0112 6a.75.75 0 01-.75-.75v-.75m0 0a.75.75 0 01.75-.75.75.75 0 01.75.75m0 0v-.75a.75.75 0 01-.75-.75.75.75 0 01-.75.75v.75m9 1.5v.75a.75.75 0 01-.75.75.75.75 0 01-.75-.75v-.75m0 0a.75.75 0 01.75-.75.75.75 0 01.75.75m0 0v-.75a.75.75 0 01-.75-.75.75.75 0 01-.75.75v.75M6.375 12v.75a.75.75 0 01-.75.75.75.75 0 01-.75-.75v-.75m0 0A.75.75 0 016 12A.75.75 0 016.375 12m0 0v-.75a.75.75 0 01-.75-.75.75.75 0 01-.75.75v.75m9 1.5v.75a.75.75 0 01-.75.75.75.75 0 01-.75-.75v-.75m0 0a.75.75 0 01.75-.75.75.75 0 01.75.75m0 0v-.75a.75.75 0 01-.75-.75.75.75 0 01-.75.75v.75M6.375 18v.75a.75.75 0 01-.75.75.75.75 0 01-.75-.75v-.75m0 0a.75.75 0 01.75-.75.75.75 0 01.75.75M3.75 18a.75.75 0 01.75.75v.75a.75.75 0 01-.75.75.75.75 0 01-.75-.75v-.75A.75.75 0 013.75 18m9 0v.75a.75.75 0 01-.75.75.75.75 0 01-.75-.75v-.75m0 0a.75.75 0 01.75-.75.75.75 0 01.75.75m-3-3v.75a.75.75 0 01-.75.75.75.75 0 01-.75-.75v-.75m0 0a.75.75 0 01.75-.75.75.75 0 01.75.75m0 0v-.75a.75.75 0 01-.75-.75.75.75 0 01-.75.75v.75m6 3v.75a.75.75 0 01-.75.75.75.75 0 01-.75-.75v-.75m0 0a.75.75 0 01.75-.75.75.75 0 01.75.75m0 0v-.75a.75.75 0 01-.75-.75.75.75 0 01-.75.75v.75" /></svg>
+                    <span>Vendas</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Marketing -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" /><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" /></svg>
+                    <span>Marketing</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Operações -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" /></svg>
+                    <span>Operações</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Customer Success -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.31h5.364c.518 0 .734.654.372 1.01l-4.36 3.192a.563.563 0 00-.182.658l2.125 5.111a.563.563 0 01-.84.606l-4.37-3.192a.563.563 0 00-.656 0l-4.37 3.192a.563.563 0 01-.84-.606l2.125-5.111a.563.563 0 00-.182-.658L2.484 9.92a.563.563 0 01.372-1.01h5.364a.563.563 0 00.475-.31l2.125-5.111z" /></svg>
+                    <span>Customer Success</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Financeiro -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0l.879-.659M12 21a9.002 9.002 0 008.824-10.29C20.93 7.845 20.142 6 18 6H6c-2.142 0-2.93 1.845-2.824 4.71A9.002 9.002 0 0012 21z" /></svg>
+                    <span>Financeiro</span>
+                </a>
+
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 pt-4">Dados</p>
+                <a href="./importacoes.html" id="nav-importacao" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Importação -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" /></svg>
+                    <span>Importação de Dados</span>
+                </a>
+                
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 pt-4">Gestão</p>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Metas -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h12A2.25 2.25 0 0020.25 14.25V3m-16.5 0h16.5m-16.5 0A2.25 2.25 0 006 5.25h12A2.25 2.25 0 0020.25 3m-16.5 0v.008c0 .341.22.658.533.795l3.038 1.013a.75.75 0 00.676 0l3.038-1.013A.75.75 0 0012 3.008V3m-8.25 0c.312.137.64.208.967.208h10.56c.327 0 .655-.071.967-.208m-12.498 5.602l3.038 1.013a.75.75 0 00.676 0l3.038-1.013A.75.75 0 0012 8.602V6.75m-8.25 1.852c.312.137.64.208.967.208h10.56c.327 0 .655-.071.967-.208m-12.498 3.75l3.038 1.013a.75.75 0 00.676 0l3.038-1.013A.75.75 0 0012 12.352v-1.85" /></svg>
+                    <span>Metas</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Relatórios -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6A7.5 7.5 0 107.5 7.5h-7.5V6z" /><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" /></svg>
+                    <span>Relatórios</span>
+                </a>
+                
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 pt-4">Administração</p>
+                <a href="./integracoes.html" id="nav-integracoes" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Integrações -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" /></svg>
+                    <span>Integrações</span>
+                </a>
+                <a href="./usuarios.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Usuários -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                    <span>Usuários</span>
+                </a>
+                <a href="./configuracoes.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">
+                    <!-- Ícone Configurações -->
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-1.007 1.11-.1.06.052.119.102.178.152l.094.094a1.5 1.5 0 002.12 0l.094-.094c.059-.05.118-.1.178-.152.55-.007 1.02.46 1.11.1.09-.542.56-1.007 1.11-.1.06.052.119.102.178.152l.094.094a1.5 1.5 0 002.12 0l.094-.094c.059-.05.118-.1.178-.152.55-.007 1.02.46 1.11.1.09-.542.56-1.007 1.11-.1.06.052.119.102.178.152l.094.094a1.5 1.5 0 002.12 0l.094-.094c.059-.05.118-.1.178-.152.55-.007 1.02.46 1.11.1.09-.542.56-1.007 1.11-.1.06.052.119.102.178.152l.094.094a1.5 1.5 0 002.12 0l.094-.094c.059-.05.118-.1.178-.152.55-.007 1.02.46 1.11.1v1.594c.09.542-.275 1.139-.746 1.591l-.094.094a1.5 1.5 0 000 2.12l.094.094c.47.452.836 1.049.746 1.591v1.594c-.09.542-.56 1.007-1.11.1-.06-.052-.119-.102-.178-.152l-.094-.094a1.5 1.5 0 00-2.12 0l-.094.094c-.059.05-.118.1-.178.152-.55.007-1.02-.46-1.11-.1-.09.542-.56 1.007-1.11.1-.06-.052-.119-.102-.178-.152l-.094-.094a1.5 1.5 0 00-2.12 0l-.094.094c-.059.05-.118.1-.178.152-.55.007-1.02-.46-1.11-.1-.09.542-.56 1.007-1.11.1-.06-.052-.119-.102-.178-.152l-.094-.094a1.5 1.5 0 00-2.12 0l-.094.094c-.059.05-.118.1-.178.152-.55.007-1.02-.46-1.11-.1-.09.542-.56 1.007-1.11.1-.06-.052-.119-.102-.178-.152l-.094-.094a1.5 1.5 0 00-2.12 0l-.094.094c-.059.05-.118.1-.178.152-.55.007-1.02-.46-1.11-.1v-1.594c-.09-.542.275-1.139.746-1.591l.094-.094a1.5 1.5 0 000-2.12l-.094-.094a1.5 1.5 0 000-2.12l.094-.094c.47-.452.836-1.049.746-1.591V3.94zM12 15a3 3 0 100-6 3 3 0 000 6z" /></svg>
+                    <span>Configurações</span>
+                </a>
+            </nav>
+
+            <!-- Perfil do Usuário / Sair -->
+            <div class="border-t border-gray-200 p-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold" id="user-avatar">
+                        U
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold text-gray-800" id="user-name-sidebar">Carregando...</p>
+                        <p class="text-xs text-gray-500" id="user-email-sidebar">Carregando...</p>
+                    </div>
+                </div>
+                <button id="logout-button" class="w-full text-left text-sm text-red-600 font-medium hover:underline mt-3 pl-1">
+                    Sair
+                </button>
+            </div>
+        </aside>
+
+        <!-- ============================================= -->
+        <!-- CONTEÚDO PRINCIPAL                          -->
+        <!-- ============================================= -->
+        <main class="ml-64 flex-1 h-screen overflow-y-auto">
+            <div class="p-8">
+                <!-- Header do Conteúdo -->
+                <header class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-800">Visão Geral</h2>
+                    <p class="text-gray-600">Principais métricas e insights do seu negócio</p>
+                </header>
+
+                <!-- 1. Grid de KPIs -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Card Receita Total -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-sm font-medium text-gray-500">Receita Total</h3>
+                        <p class="text-3xl font-bold text-gray-900 mt-2" id="kpi-receita">
+                            <span class="loading-placeholder"></span>
+                        </p>
+                    </div>
+                    <!-- Card Lucro Total -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-sm font-medium text-gray-500">Lucro Total</h3>
+                        <p class="text-3xl font-bold text-gray-900 mt-2" id="kpi-lucro">
+                            <span class="loading-placeholder"></span>
+                        </p>
+                    </div>
+                    <!-- Card Unidades Vendidas -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-sm font-medium text-gray-500">Unidades Vendidas</h3>
+                        <p class="text-3xl font-bold text-gray-900 mt-2" id="kpi-vendas">
+                            <span class="loading-placeholder"></span>
+                        </p>
+                    </div>
+                    <!-- Card NPS Médio -->
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-sm font-medium text-gray-500">NPS Médio</h3>
+                        <p class="text-3xl font-bold text-gray-900 mt-2" id="kpi-nps">
+                            <span class="loading-placeholder" style="width: 50%;"></span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 2. Grid Principal (Gráfico e Insights) -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+                    
+                    <!-- Coluna do Gráfico -->
+                    <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Evolução da Receita</h3>
+                        <div class="h-96 relative">
+                            <!-- Placeholder de Loading para o Gráfico -->
+                            <div id="chart-loading" class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-10">
+                                <svg class="animate-spin h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                            </div>
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Coluna de Insights e Ações -->
+                    <div class="space-y-6">
+                        
+                        <!-- Insights Importantes -->
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Insights Importantes</h3>
+                            <div id="insights-list" class="space-y-4">
+                                <!-- Placeholder de Loading para Insights -->
+                                <div id="insights-loading" class="space-y-3">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-5 h-5 bg-gray-200 rounded-full"></div>
+                                        <div class="loading-placeholder" style="width: 80%; height: 1.25rem;"></div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-5 h-5 bg-gray-200 rounded-full"></div>
+                                        <div class="loading-placeholder" style="width: 70%; height: 1.25rem;"></div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-5 h-5 bg-gray-200 rounded-full"></div>
+                                        <div class="loading-placeholder" style="width: 75%; height: 1.25rem;"></div>
+                                    </div>
+                                </div>
+                                <!-- Conteúdo real será inserido aqui -->
+                            </div>
+                        </div>
+
+                        <!-- Ações Rápidas (Estático) -->
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Ações Rápidas</h3>
+                            <div class="space-y-3">
+                                <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 font-medium bg-gray-50 hover:bg-gray-100">
+                                    <svg class="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 19.5h16.5m-16.5-6.75h16.5m-16.5-6.75h16.5m-16.5-6.75h16.5" /></svg>
+                                    <span>Ver Relatórios Detalhados</span>
+                                </a>
+                                <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 font-medium bg-gray-50 hover:bg-gray-100">
+                                    <svg class="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.5l6.75-6.75m0 0l-1.5-1.5m1.5 1.5l1.5 1.5m-1.5-1.5V3m0 12v6m0-6H3.375m17.25 0H12m0 0l3.75 3.75M12 15l-3.75 3.75" /></svg>
+                                    <span>Gerenciar Metas</span>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div> <!-- Fim do Grid Principal -->
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ============================================= -->
+    <!-- LÓGICA JAVASCRIPT (MODIFICADA)                -->
+    <!-- ============================================= -->
+    <script type="module">
+        // =============================================
+        // CONFIGURAÇÃO
+        // =============================================
+        const API_BASE_URL = 'http://localhost:8000'; 
+        let authToken = null;
+        let chartInstance = null; // Guarda a instância do gráfico
+
+        // =============================================
+        // ELEMENTOS DOM
+        // =============================================
+        const kpiReceitaEl = document.getElementById('kpi-receita');
+        const kpiLucroEl = document.getElementById('kpi-lucro');
+        const kpiVendasEl = document.getElementById('kpi-vendas');
+        const kpiNpsEl = document.getElementById('kpi-nps');
+        
+        const userNameSidebarEl = document.getElementById('user-name-sidebar');
+        const userEmailSidebarEl = document.getElementById('user-email-sidebar');
+        const userAvatarEl = document.getElementById('user-avatar');
+        
+        const insightsListEl = document.getElementById('insights-list');
+        const insightsLoadingEl = document.getElementById('insights-loading');
+        
+        const chartCanvas = document.getElementById('revenueChart');
+        const chartLoadingEl = document.getElementById('chart-loading');
+
+        const logoutButton = document.getElementById('logout-button');
+
+        // =============================================
+        // FUNÇÕES AUXILIARES
+        // =============================================
+
+        /** Formata número para moeda BRL */
+        function formatCurrency(value) {
+            const num = parseFloat(value) || 0;
+            return num.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+        
+        /** Formata número inteiro */
+        function formatInt(value) {
+            const num = parseInt(value, 10) || 0;
+            return num.toLocaleString('pt-BR');
+        }
+
+        /** Formata número decimal (ex: NPS) */
+        function formatDecimal(value) {
+            const num = parseFloat(value) || 0;
+            return num.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+        }
+
+        /** Wrapper de Fetch com Auth e Redirecionamento 401 */
+        async function fetchAPI(endpoint, options = {}) {
+            const defaultOptions = {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            const config = {
+                ...defaultOptions,
+                ...options,
+                headers: {
+                    ...defaultOptions.headers,
+                    ...(options.headers || {})
+                }
+            };
+
+            const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+
+            if (response.status === 401) {
+                localStorage.removeItem('authToken');
+                window.location.href = './login.html';
+                throw new Error('Sessão expirada. Redirecionando para login.');
+            }
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || `Erro HTTP ${response.status}`);
+            }
+
+            if (response.status === 204) {
+                return null;
+            }
+            
+            return response.json();
+        }
+
+        // =============================================
+        // FUNÇÕES DE RENDERIZAÇÃO
+        // =============================================
+
+        /** Popula os dados do usuário na sidebar */
+        function populateUser(user) {
+            userNameSidebarEl.textContent = user.nome_completo;
+            userEmailSidebarEl.textContent = user.email;
+            userAvatarEl.textContent = user.nome_completo.charAt(0).toUpperCase();
+        }
+
+        /** Popula os 4 cards de KPI */
+        function populateKPIs(kpis) {
+            if (!kpis || kpis.length === 0) {
+                kpiReceitaEl.textContent = "N/A";
+                kpiLucroEl.textContent = "N/A";
+                kpiVendasEl.textContent = "N/A";
+                kpiNpsEl.textContent = "N/A";
+                return;
+            }
+
+            const kpiMap = new Map(kpis.map(kpi => [kpi.nome, kpi.valor]));
+
+            kpiReceitaEl.textContent = formatCurrency(kpiMap.get("Receita Total"));
+            kpiLucroEl.textContent = formatCurrency(kpiMap.get("Lucro Total"));
+            kpiVendasEl.textContent = formatInt(kpiMap.get("Unidades Vendidas"));
+            kpiNpsEl.textContent = formatDecimal(kpiMap.get("NPS Médio"));
+        }
+
+        /** Renderiza o gráfico de evolução da receita */
+        function renderChart(chartData) {
+            if (!chartCanvas || !chartData) return;
+            
+            const ctx = chartCanvas.getContext('2d');
+            
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: chartData.labels || [],
+                    datasets: chartData.datasets || [] 
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'R$ ' + (value / 1000).toLocaleString('pt-BR') + 'k';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'top' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label || ''}: ${formatCurrency(context.parsed.y)}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Esconde o loading do gráfico
+            chartLoadingEl.style.display = 'none';
+        }
+
+        /** Popula a lista de insights */
+        function populateInsights(insights) {
+            // Esconde o placeholder de loading
+            insightsLoadingEl.style.display = 'none';
+            insightsListEl.innerHTML = ''; // Limpa a lista
+
+            if (!insights || insights.length === 0) {
+                insightsListEl.innerHTML = '<p class="text-sm text-gray-500">Nenhum insight encontrado.</p>';
+                return;
+            }
+
+            const priorityClasses = {
+                'alta': 'bg-red-100 text-red-800',
+                'media': 'bg-yellow-100 text-yellow-800',
+                'baixa': 'bg-blue-100 text-blue-800'
+            };
+            const priorityIcons = {
+                'alta': '🔥',
+                'media': '⚠️',
+                'baixa': '💡'
+            };
+
+            insights.forEach(insight => {
+                const insightEl = document.createElement('div');
+                insightEl.className = 'flex items-start space-x-3';
+                
+                const priority = (insight.prioridade || 'baixa').toLowerCase();
+                const icon = priorityIcons[priority] || '💡';
+                const classes = priorityClasses[priority] || priorityClasses['baixa'];
+
+                insightEl.innerHTML = `
+                    <div class="text-xl">${icon}</div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <h4 class="font-semibold text-gray-800">${insight.titulo}</h4>
+                            <span class="text-xs font-medium px-2 py-0.5 rounded-full ${classes}">
+                                ${insight.prioridade}
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-600">${insight.resumo}</p>
+                    </div>
+                `;
+                insightsListEl.appendChild(insightEl);
+            });
+        }
+
+        /** Lógica de Logout */
+        function handleLogout() {
+            authToken = null;
+            localStorage.removeItem('authToken'); 
+            window.location.href = 'login.html';
+        }
+
+        // ======================================================
+        // NOVAS FUNÇÕES DE CARREGAMENTO (PROGRESSIVO)
+        // ======================================================
+
+        /** Carrega os dados do dashboard (KPIs e Gráfico) */
+        async function loadDashboardData() {
+            try {
+                const defaultFilters = JSON.stringify({});
+
+                // [!code --] Linha Antiga (passível de cache)
+                // const [kpiData, chartData] = await Promise.all([
+                //     fetchAPI('/dashboard/kpis'),
+                //     fetchAPI('/dashboard/grafico-receita-tempo', { method: 'POST', body: defaultFilters })
+                // ]);
+
+                // [!code ++] CORREÇÃO: Adiciona cache buster na chamada GET dos KPIs
+                const cacheBuster = `?_=${new Date().getTime()}`;
+                const [kpiData, chartData] = await Promise.all([
+                    fetchAPI(`/dashboard/kpis${cacheBuster}`), // Adicionado cache buster
+                    fetchAPI('/dashboard/grafico-receita-tempo', { method: 'POST', body: defaultFilters })
+                ]);
+                
+                // Popula a UI (os placeholders "Carregando..." serão substituídos)
+                populateKPIs(kpiData.kpis);
+                renderChart(chartData);
+
+            } catch (error) {
+                console.error('Falha ao carregar dados do dashboard:', error);
+                // Coloca "Erro" nos cards se falhar
+                kpiReceitaEl.textContent = "Erro";
+                kpiLucroEl.textContent = "Erro";
+                kpiVendasEl.textContent = "Erro";
+                kpiNpsEl.textContent = "Erro";
+                chartLoadingEl.innerHTML = '<p class="text-red-500">Erro ao carregar gráfico.</p>';
+            }
+        }
+
+        /** Carrega os insights da IA (separadamente, pois é lento) */
+        async function loadInsightsData() {
+            try {
+                const defaultFilters = JSON.stringify({});
+                // O placeholder "Carregando insights..." já está na tela
+                const insightData = await fetchAPI('/insights/catalogo', { method: 'POST', body: defaultFilters });
+                
+                // Popula os insights quando eles chegarem
+                populateInsights(insightData.insights);
+
+            } catch (error) {
+                console.error('Falha ao carregar insights da IA:', error);
+                insightsLoadingEl.style.display = 'none';
+                insightsListEl.innerHTML = '<p class="text-sm text-red-500">Erro ao carregar insights.</p>';
+            }
+        }
+
+        /** FUNÇÃO PRINCIPAL DE INICIALIZAÇÃO (MODIFICADA) */
+        async function initDashboard() {
+            try {
+                // 1. Carrega o dado essencial primeiro (autenticação do usuário)
+                const userData = await fetchAPI('/usuarios/me');
+                populateUser(userData);
+
+                // 2. MOSTRA A PÁGINA IMEDIATAMENTE!
+                // A página agora carrega rápido, com os placeholders
+                document.body.style.display = 'flex';
+
+                // 3. Inicia o carregamento dos dados do dashboard (KPIs e Gráfico)
+                loadDashboardData();
+
+                // 4. Inicia o carregamento dos insights (IA) separadamente
+                loadInsightsData();
+
+                // 5. Adiciona listeners de eventos
+                logoutButton.addEventListener('click', handleLogout);
+
+            } catch (error) {
+                console.error('Falha ao inicializar o dashboard:', error);
+                // Se o fetchAPI falhar (ex: token expirado), ele já redireciona
+                if (!error.message.includes('Sessão expirada')) {
+                    handleLogout();
+                }
+            }
+        }
+
+        // =============================================
+        // INICIALIZAÇÃO E AUTH GUARD
+        // =============================================
+        authToken = localStorage.getItem('authToken');
+        
+        if (!authToken) {
+            window.location.href = 'login.html';
+        } else {
+            // Inicia o carregamento progressivo
+            initDashboard();
+        }
+    </script>
+</body>
+</html>
